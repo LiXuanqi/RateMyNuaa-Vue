@@ -62,7 +62,7 @@ md.button {
 
 <script>
 import resource from '../utils/resource';
-import Register from './Register.vue'
+// import Register from './Register.vue'
 import Login from './Login.vue'
 export default {
     computed: {
@@ -89,68 +89,68 @@ export default {
             document.cookie=c_name+ "=" +escape(value)+
             ((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
         },
-        openRegisterPage: function(){
-            const h = this.$createElement;
-            this.$msgbox({
-            title: '注册',
-            message: (
-                <Register></Register>
-            ),
-            showCancelButton: true,
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            beforeClose: (action, instance, done) => {
-                if (action === 'confirm') {
-                instance.confirmButtonLoading = true;
-                instance.confirmButtonText = '执行中...';
-                setTimeout(() => {
-                    done();
-                    setTimeout(() => {
-                    instance.confirmButtonLoading = false;
-                    }, 300);
-                }, 3000);
-                } else {
-                done();
-                }
-            }
-            }).then(action => {
-            this.$message({
-                type: 'info',
-                message: 'action: ' + action
-            });
-            });
-        },
-        openLoginPage: function(){
-            const h = this.$createElement;
-            this.$msgbox({
-            title: '登陆',
-            message: (
-                <Login></Login>
-            ),
-            showCancelButton: true,
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            beforeClose: (action, instance, done) => {
-                if (action === 'confirm') {
-                instance.confirmButtonLoading = true;
-                instance.confirmButtonText = '执行中...';
-                setTimeout(() => {
-                    done();
-                    setTimeout(() => {
-                    instance.confirmButtonLoading = false;
-                    }, 300);
-                }, 3000);
-                } else {
-                done();
-                }
-            }
-            }).then(action => {
-            this.$message({
-                type: 'info',
-                message: 'action: ' + action
-            });
-            });
-        },
+        // openRegisterPage: function(){
+        //     const h = this.$createElement;
+        //     this.$msgbox({
+        //     title: '注册',
+        //     message: (
+        //         <Register />
+        //     ),
+        //     showCancelButton: true,
+        //     confirmButtonText: '确定',
+        //     cancelButtonText: '取消',
+        //     beforeClose: (action, instance, done) => {
+        //         if (action === 'confirm') {
+        //         instance.confirmButtonLoading = true;
+        //         instance.confirmButtonText = '执行中...';
+        //         setTimeout(() => {
+        //             done();
+        //             setTimeout(() => {
+        //             instance.confirmButtonLoading = false;
+        //             }, 300);
+        //         }, 3000);
+        //         } else {
+        //         done();
+        //         }
+        //     }
+        //     }).then(action => {
+        //     this.$message({
+        //         type: 'info',
+        //         message: 'action: ' + action
+        //     });
+        //     });
+        // },
+        // openLoginPage: function(){
+        //     const h = this.$createElement;
+        //     this.$msgbox({
+        //     title: '登陆',
+        //     message: (
+        //         <Login></Login>
+        //     ),
+        //     showCancelButton: true,
+        //     confirmButtonText: '确定',
+        //     cancelButtonText: '取消',
+        //     beforeClose: (action, instance, done) => {
+        //         if (action === 'confirm') {
+        //         instance.confirmButtonLoading = true;
+        //         instance.confirmButtonText = '执行中...';
+        //         setTimeout(() => {
+        //             done();
+        //             setTimeout(() => {
+        //             instance.confirmButtonLoading = false;
+        //             }, 300);
+        //         }, 3000);
+        //         } else {
+        //         done();
+        //         }
+        //     }
+        //     }).then(action => {
+        //     this.$message({
+        //         type: 'info',
+        //         message: 'action: ' + action
+        //     });
+        //     });
+        // },
 
 
     },

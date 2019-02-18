@@ -241,42 +241,42 @@ mounted(){
 },
 
 methods:{
-    reportThisComment: function() {
-    const h = this.$createElement;
-        this.$msgbox({
-        title: '举报',
-        message:(
-            <Reporter reportType={'Comment'}></Reporter>
-        ),
-        showCancelButton: true,
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        beforeClose: (action, instance, done) => {
-            if (action === 'confirm') {
-            var data = "commentId="+this.id
-                        +"&reportType="+this.$store.state.reportInfo.reportType
-                        +"&reportReason="+this.$store.state.reportInfo.reportReason
-                        +"&reporterEmail="+this.$store.state.reportInfo.reporterEmail;
-            console.log(data);
-            axios.post('/api/?s=Report.ReportComment', data)
-                .then(function (response) {
-                    console.log(response);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            done();
-            } else {
-            done();
-            }
-        }
-        }).then(action => {
-        this.$message({
-            type: 'info',
-            message: 'action: ' + action
-        });
-        });
-    },
+    // reportThisComment: function() {
+    // const h = this.$createElement;
+    //     this.$msgbox({
+    //     title: '举报',
+    //     message:(
+    //         <Reporter reportType={'Comment'}></Reporter>
+    //     ),
+    //     showCancelButton: true,
+    //     confirmButtonText: '确定',
+    //     cancelButtonText: '取消',
+    //     beforeClose: (action, instance, done) => {
+    //         if (action === 'confirm') {
+    //         var data = "commentId="+this.id
+    //                     +"&reportType="+this.$store.state.reportInfo.reportType
+    //                     +"&reportReason="+this.$store.state.reportInfo.reportReason
+    //                     +"&reporterEmail="+this.$store.state.reportInfo.reporterEmail;
+    //         console.log(data);
+    //         axios.post('/api/?s=Report.ReportComment', data)
+    //             .then(function (response) {
+    //                 console.log(response);
+    //             })
+    //             .catch(function (error) {
+    //                 console.log(error);
+    //             });
+    //         done();
+    //         } else {
+    //         done();
+    //         }
+    //     }
+    //     }).then(action => {
+    //     this.$message({
+    //         type: 'info',
+    //         message: 'action: ' + action
+    //     });
+    //     });
+    // },
     deleteComment: function() {
     var data = "commentId="+this.id
                 +"&userId="+this.$store.state.user.user_id;

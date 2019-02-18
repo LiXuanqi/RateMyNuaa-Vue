@@ -260,42 +260,42 @@ methods: {
         // })();
 
     },
-    reportThisCourse: function (){
-        const h = this.$createElement;
-        this.$msgbox({
-          title: '举报',
-          message:(
-              <Reporter reportType={'Course'}></Reporter>
-          ),
-          showCancelButton: true,
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          beforeClose: (action, instance, done) => {
-            if (action === 'confirm') {
-                var data = "courseId="+this.id
-                            +"&reportType="+this.$store.state.reportInfo.reportType
-                            +"&reportReason="+this.$store.state.reportInfo.reportReason
-                            +"&reporterEmail="+this.$store.state.reportInfo.reporterEmail;
-                console.log(data);
-                axios.post('/api/?s=Report.ReportCourse', data)
-                    .then(function (response) {
-                        console.log(response);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-                done();
-            } else {
-              done();
-            }
-          }
-        }).then(action => {
-          this.$message({
-            type: 'info',
-            message: 'action: ' + action
-          });
-        });
-    },
+    // reportThisCourse: function (){
+    //     const h = this.$createElement;
+    //     this.$msgbox({
+    //       title: '举报',
+    //       message:(
+    //           <Reporter reportType={'Course'}></Reporter>
+    //       ),
+    //       showCancelButton: true,
+    //       confirmButtonText: '确定',
+    //       cancelButtonText: '取消',
+    //       beforeClose: (action, instance, done) => {
+    //         if (action === 'confirm') {
+    //             var data = "courseId="+this.id
+    //                         +"&reportType="+this.$store.state.reportInfo.reportType
+    //                         +"&reportReason="+this.$store.state.reportInfo.reportReason
+    //                         +"&reporterEmail="+this.$store.state.reportInfo.reporterEmail;
+    //             console.log(data);
+    //             axios.post('/api/?s=Report.ReportCourse', data)
+    //                 .then(function (response) {
+    //                     console.log(response);
+    //                 })
+    //                 .catch(function (error) {
+    //                     console.log(error);
+    //                 });
+    //             done();
+    //         } else {
+    //           done();
+    //         }
+    //       }
+    //     }).then(action => {
+    //       this.$message({
+    //         type: 'info',
+    //         message: 'action: ' + action
+    //       });
+    //     });
+    // },
 },
 }
 </script>
