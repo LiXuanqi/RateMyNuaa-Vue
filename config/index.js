@@ -12,7 +12,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api': 'http://localhost:80/rate/api',
+      '/api': 'http://localhost:6543/',
       '/docs': 'http://localhost:80/rate/docs',
       '/sso-v2': 'http://localhost:80/sso-v2',
     },

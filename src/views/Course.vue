@@ -13,17 +13,24 @@
       </div>
       <div id="page-courses">
         <h3>热门课程</h3>
-        <md-tabs class="md-transparent">
+        <md-tabs class="md-transparent" @change="onTabChanged">
           <md-tab id="tab-pages" md-label="必修课">
-            <ShowCourse
-              v-bind:targetType="'必修课'" 
-              v-bind:searchType="'byType'"
-            ></ShowCourse>
+            <md-input-container>
+              <label for="college">选择你所在的学院</label>
+              <md-select name="college" id="college" v-model="targetCollege">
+                <md-option value="all">All</md-option>
+                <md-option value="能源与动力学院">能源与动力学院</md-option>
+                <md-option value="外国语学院">外国语学院</md-option>
+                <md-option value="计算机学院">计算机学院</md-option>
+              </md-select>
+            </md-input-container>
           </md-tab>
-          <md-tab id="tab-home" md-label="选修课">
-            <ShowCourse v-bind:targetType="'选修课'" v-bind:searchType="'byType'"></ShowCourse>
-          </md-tab>
+          <md-tab id="tab-home" md-label="选修课"/>
         </md-tabs>
+       
+        <ShowCourse
+          v-bind:listData="filterData" 
+        />
       </div>
     </div>
     <Footer></Footer>
@@ -109,21 +116,55 @@
 
 <script>
 import resource from '../utils/resource';
-
+import { getAllCourse } from '../utils/api';
 export default {
   data(){
     return{
       targetCourse:"",
-      courseData:[],
+      courses: [],
+      targetCollege: "all",
+      targetType: 'compulsory'
     };
   },
-
+  computed: {
+    filterData: function() {
+      return this.courses.filter((item) => {
+        // filter by college
+        if (this.targetCollege === "all" || this.targetType === "optional") {
+          return true;
+        } else {
+          return item.college.name === this.targetCollege;
+        }
+      }).filter((item) => {
+        // filter by type
+        return item.type === this.targetType;
+      });
+    }
+  },
+  mounted() {
+    this.getCourses();
+  },
   methods:{
+    getCourses() {
+      getAllCourse().then((res) => {
+        this.courses = res.data;
+        console.log(this.courses);
+      });
+    },
+
     async searchByCourse(){
       const data = await resource.post("/api/?s=Course.GetCourseByName&ct_name=%27" + this.targetCourse + "%27", this.filter);
       this.courseData = data;
       console.log(this.courseData);
       this.$router.push({ name: 'result', params: { targetData: this.courseData }});
+    },
+    onTabChanged(index) {
+      // 0: 必修课  1: 选修课
+      if (index == 0) {
+        this.targetType = "compulsory"
+      } else if (index == 1) {
+        this.targetType = "optional"
+      }
     },
     setSearch: function(data){
           this.targetCourse=data;
