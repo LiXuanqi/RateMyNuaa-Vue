@@ -3,33 +3,32 @@
         <Frame></Frame>
         <div class="page-container">
             <Cover
-            v-for="item in tableData"
-            v-bind:key="item.c_id"
-            v-bind:type="item.ct_type"
-            v-bind:name="item.ct_name"
-            v-bind:teacher="item.c_teacher"
-            v-bind:id="item.c_id"
-            v-bind:difficulty="item.c_mean_difficulty"
-            v-bind:attendance="item.c_mean_attendance"
-            v-bind:grade="item.c_mean_grade"
-            v-bind:overallQuality="item.c_mean_overallquality"
-            v-on:rate="changeTargetPage"
-            ></Cover> 
+                v-bind:key="course.id"
+                v-bind:type="course.type"
+                v-bind:name="course.name"
+                v-bind:teacher="course['teacher']['name']"
+                v-bind:id="course.id"
+                v-bind:difficulty="5"
+                v-bind:attendance="6"
+                v-bind:grade="80"
+                v-bind:overallQuality="3"
+                v-on:rate="changeTargetPage"
+            />
 
             <CommentCard
-            v-if="targetPage==='comment'"
-            v-for="item in commentData"
-            v-bind:key="item.cc_id"
-            v-bind:id="item.cc_id"
-            v-bind:date="item.cc_date"
-            v-bind:content="item.cc_content"
-            v-bind:overallQuality="item.cc_overallquality"
-            v-bind:difficulty="item.cc_difficulty"
-            v-bind:attendance="item.cc_attendance"
-            v-bind:grade="item.cc_grade"
-            v-bind:testType="item.cc_testtype"
-            v-bind:userId="item.cc_userid"
-            ></CommentCard>   
+                v-if="targetPage==='comment'"
+                v-for="comment in comments"
+                v-bind:key="comment.id"
+                v-bind:id="comment.id"
+                v-bind:date="'2017-08-06'"
+                v-bind:content="comment.content"
+                v-bind:overallQuality="comment.overall"
+                v-bind:difficulty="comment.difficulty"
+                v-bind:attendance="comment.attendance"
+                v-bind:grade="comment.grade"
+                v-bind:testType="comment.test_type"
+                v-bind:userId="'userid'"
+            />
 
     
             <Form 
@@ -75,42 +74,42 @@
 </style>
 <script>
 import resource from "../utils/resource";
-
+import { getCourse, getCommentsByCourseId } from '../utils/api';
 export default {
 data() {
     return {
-    tableData: [],
-    commentData: [],
-    targetPage: 'comment',
+        course: {},
+        comments: [],
+        targetPage: 'comment',
     };
 },
 mounted() {
-    this.showList();
-    this.showComment();
+    this.getCourse();
+    this.getComments();
 },
 updated() {
-    // this.showComment();
+    
 },
 methods: {
-    async showList() {
-    const data = await resource.post(
-        "/api/?s=Course.GetCourseById&c_id=" + this.$route.params.id,
-        this.filter
-    );
-    this.tableData = data;
+    getCourse() {
+        getCourse(this.$route.params.id)
+            .then((res) => {
+                this.course = res.data;
+                console.log(this.course);
+            });
     },
-    async showComment() {
-    const data = await resource.post(
-        "/api/?s=Comment.GetComment&c_id=" + this.$route.params.id,
-        this.filter
-    );
-    this.commentData = data;
+    getComments() {
+        getCommentsByCourseId(this.$route.params.id)
+            .then((res) => {
+                this.comments = res.data;
+                console.log(this.comments);
+            });
     },
     changeTargetPage: function (){
-    this.targetPage = 'form';
+        this.targetPage = 'form';
     },
     setTargetPage: function(page){
-    this.targetPage = page;
+        this.targetPage = page;
     },
 }
 };

@@ -46,50 +46,13 @@
         <p class="comment-content-text">{{content}}</p>
     </div>
     <div class="comment-bottom-section">
-        <!-- 认为有用 -->
-        <!-- <a @click="thinkUseful">
-            <div class="comment-evaluation-item">           
-            <svg class="icon icon-evaluate" aria-hidden="true">
-                <use xlink:href="#icon-jiantoushang"></use>
-            </svg>
-            <span>{{isUseful}}</span>            
-            </div>
-        </a> -->
-        <!-- 认为没用 -->
-        <!-- <div class="comment-evaluation-item">
-            <a @click="thinkNotUseful"><svg class="icon icon-evaluate" aria-hidden="true">
-            <use xlink:href="#icon-jiantouxia"></use>
-            </svg></a>
-        </div> -->
-
         <div class="comment-action-item">
-        <a @click="reportThisComment">
-            <svg class="icon icon-evaluate" aria-hidden="true">
-            <use xlink:href="#icon-fenxiang"></use>
-            </svg>
-            <span>分享</span>
-        </a>
-        </div>
-        <div class="comment-action-item">
-        <a @click="reportThisComment">
-            <svg class="icon icon-evaluate" aria-hidden="true">
-            <use xlink:href="#icon-iconfont"></use>
-            </svg>
-            <span>举报</span>
+            <a @click="shareComment">
+                <svg class="icon icon-evaluate" aria-hidden="true">
+                <use xlink:href="#icon-fenxiang"></use>
+                </svg>
+                <span>分享</span>
             </a>
-        </div>
-        <!-- 删除评论 -->
-        <div 
-        class="comment-action-item"
-        v-if="this.userId==this.$store.state.user.user_id"
-        @click="deleteComment"
-        >
-        <a @click="reportThisComment">
-            <svg class="icon icon-evaluate" aria-hidden="true">
-            <use xlink:href="#icon-changyonggoupiaorenshanchu"></use>
-            </svg>
-            <span>删除</span>
-        </a>
         </div>
     </div>
 
@@ -223,136 +186,26 @@ import Reporter from './Reporter.vue'
 export default {
 data(){
     return {
-    usefulClickStatus: 0,
-    notUsefulClickStatus: 0,
-    isUseful: 0,
-    notUseful: 0,
-    overallQualityColor: {},
-    overallQualityText: '',
-    difficultyColor: {},
+        usefulClickStatus: 0,
+        notUsefulClickStatus: 0,
+        isUseful: 0,
+        notUseful: 0,
+        overallQualityColor: {},
+        overallQualityText: '',
+        difficultyColor: {},
     };
 },
 props:['id', 'date', 'content', 'overallQuality', 'difficulty', 'grade', 'attendance', 'testType', 'userId'],
 
 mounted(){
-    this.getUsefulNumber();
     this.setTextColor(this.overallQuality, "overallQuality");
     this.setTextColor(this.difficulty, "difficulty");
 },
 
 methods:{
-    // reportThisComment: function() {
-    // const h = this.$createElement;
-    //     this.$msgbox({
-    //     title: '举报',
-    //     message:(
-    //         <Reporter reportType={'Comment'}></Reporter>
-    //     ),
-    //     showCancelButton: true,
-    //     confirmButtonText: '确定',
-    //     cancelButtonText: '取消',
-    //     beforeClose: (action, instance, done) => {
-    //         if (action === 'confirm') {
-    //         var data = "commentId="+this.id
-    //                     +"&reportType="+this.$store.state.reportInfo.reportType
-    //                     +"&reportReason="+this.$store.state.reportInfo.reportReason
-    //                     +"&reporterEmail="+this.$store.state.reportInfo.reporterEmail;
-    //         console.log(data);
-    //         axios.post('/api/?s=Report.ReportComment', data)
-    //             .then(function (response) {
-    //                 console.log(response);
-    //             })
-    //             .catch(function (error) {
-    //                 console.log(error);
-    //             });
-    //         done();
-    //         } else {
-    //         done();
-    //         }
-    //     }
-    //     }).then(action => {
-    //     this.$message({
-    //         type: 'info',
-    //         message: 'action: ' + action
-    //     });
-    //     });
-    // },
-    deleteComment: function() {
-    var data = "commentId="+this.id
-                +"&userId="+this.$store.state.user.user_id;
-    axios.post('/api/?s=Comment.DeleteComment', data)
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    },
+    shareComment() {
 
-    // 获得认为该评论有用的数量
-    // async getUsefulNumber() {
-    // const usefulData = await resource.post(
-    //     "/api/?s=Comment.GetUseful&type=useful&belongToCommentId=" + this.id,
-    //     this.filter
-    // );
-    // const notUsefulData = await resource.post(
-    //     "/api/?s=Comment.GetUseful&type=notuseful&belongToCommentId=" + this.id,
-    //     this.filter
-    // );
-    // this.isUseful = usefulData.length;
-    // this.notUseful = notUsefulData.length;
-    // console.log(this.isUseful);
-    // },
-    // thinkUseful: function() {
-    // console.log("useful");
-    // if (this.usefulClickStatus == 1){
-    //     this.isUseful = parseInt(this.isUseful) - 1;
-    //     this.usefulClickStatus = 0;
-    //     this.minusOne('useful');
-    // } else{
-    //     this.isUseful = parseInt(this.isUseful) + 1;
-    //     this.usefulClickStatus = 1;
-    //     this.addOne('useful');
-    // }
-    // },
-    // thinkNotUseful: function() {
-    // console.log("notuseful");
-    // if (this.notUsefulClickStatus == 1){
-    //     this.notUseful = parseInt(this.notUseful) - 1;
-    //     this.notUsefulClickStatus = 0;
-    //     this.minusOne('notuseful');
-    // } else{
-    //     this.notUseful = parseInt(this.notUseful) + 1;
-    //     this.notUsefulClickStatus = 1;
-    //     this.addOne('notuseful');
-    // }
-    // },
-    // addOne: function(type){
-    // var data = "type="+type
-    //                 +"&userId="+this.$store.state.user.user_id
-    //                 +"&belongToCommentId="+this.id;
-    // console.log(data);
-    //         axios.post('/api/?s=Comment.AddOne', data)
-    //             .then(function (response) {
-    //                 console.log(response);
-    //             })
-    //             .catch(function (error) {
-    //                 console.log(error);
-    //             });
-    // },
-    // minusOne: function(type) {
-    // var data = "type="+type
-    //                 +"&userId="+this.$store.state.user.user_id
-    //                 +"&belongToCommentId="+this.id;
-    // console.log(data);
-    //         axios.post('/api/?s=Comment.MinusOne', data)
-    //             .then(function (response) {
-    //                 console.log(response);
-    //             })
-    //             .catch(function (error) {
-    //                 console.log(error);
-    //             });
-    // },
+    },
     setTextColor: function(number, type){
     console.log(number);
     if (type == "overallQuality"){
